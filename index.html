@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<script src="raphael-2.1.4.min.js"></script>
+	</head>	
+
+	<body align="Center">
+		<h1>Control</h1>	
+			
+		<input type="button" id="on" style="height: 4rem;width: 12rem; border-radius: 3rem; background-color: aqua; color:black; font-size: 35px;" onClick="switchOn()" value="on"/>
+
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var accessToken = "21309684e3ed7417cccf211f95b34c8e8ec0016b";
+			var deviceID = "3f004a000e504b464d323520"
+			var funcion ="peces"
+			var url = "https://api.particle.io/v1/devices/" + deviceID + "/"+funcion;
+
+			function switchOn()
+			{
+				$.post(url, {params: "on", access_token: accessToken });
+			}  				
+			
+			//Funcion que recive los datos y el estatus del json
+			function callback(data, status){
+				//verifica si se recibio correctamnete el json
+				if (status == "success") {
+					//en la variable temp se almacena la temperatura del json
+					dato = parseInt(data.result);
+					//se refresca el json
+					alert(dato);
+					//como un delay llamando a una funcion
+					setTimeout(getReading, 1000);
+				}
+				else {
+					alert("There was a problem");
+				}
+			}
+			
+			//funcion que actualiza constantemente
+			function getReading(){
+				$.get(url, {access_token: accessToken}, callback);
+			}
+		</script>
+		<div id="titulo" class="200x160px"></div>
+		<script>		
+			getReading();
+		</script>
+	</body>
+</html>
